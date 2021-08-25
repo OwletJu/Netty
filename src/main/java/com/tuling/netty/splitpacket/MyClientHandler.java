@@ -8,8 +8,8 @@ public class MyClientHandler extends SimpleChannelInboundHandler<MyMessageProtoc
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        for(int i = 0; i< 200; i++) {
-            String msg = "你好，我是张三！";
+        for(int i = 0; i< 2; i++) {
+            String msg = "你好，张三~";
             //创建协议包对象
             MyMessageProtocol messageProtocol = new MyMessageProtocol();
             messageProtocol.setLen(msg.getBytes(CharsetUtil.UTF_8).length);

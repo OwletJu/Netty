@@ -11,7 +11,7 @@ public class NettyByteBuf {
         // 已经读取的区域：[0,readerindex)
         // 可读取的区域：[readerindex,writerIndex)
         // 可写的区域: [writerIndex,capacity)
-        ByteBuf byteBuf = Unpooled.buffer(10);
+        ByteBuf byteBuf = Unpooled.buffer(1);
         System.out.println("byteBuf=" + byteBuf);
 
         for (int i = 0; i < 8; i++) {
@@ -37,11 +37,7 @@ public class NettyByteBuf {
             byte[] content = byteBuf2.array();
             //将 content 转成字符串
             System.out.println(new String(content, CharsetUtil.UTF_8));
-            System.out.println("byteBuf=" + byteBuf2);
-
-            System.out.println(byteBuf2.readerIndex()); // 0
-            System.out.println(byteBuf2.writerIndex()); // 12
-            System.out.println(byteBuf2.capacity()); // 36
+            System.out.println("byteBuf2=" + byteBuf2);
 
             System.out.println(byteBuf2.getByte(0)); // 获取数组0这个位置的字符h的ascii码，h=104
 

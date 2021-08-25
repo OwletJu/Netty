@@ -1,4 +1,4 @@
-package com.tuling.netty.base;
+package com.tuling.netty.reconnect;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -12,17 +12,6 @@ import io.netty.util.CharsetUtil;
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     /**
-     * 当客户端连接服务器完成就会触发该方法
-     *
-     * @param ctx
-     * @throws Exception
-     */
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) {
-        System.out.println("客户端连接通道建立完成");
-    }
-
-    /**
      * 读取客户端发送的数据
      *
      * @param ctx 上下文对象, 含有通道channel，管道pipeline
@@ -30,12 +19,13 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      * @throws Exception
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("服务器读取线程 " + Thread.currentThread().getName());
         //Channel channel = ctx.channel();
         //ChannelPipeline pipeline = ctx.pipeline(); //本质是一个双向链接, 出站入站
         //将 msg 转成一个 ByteBuf，类似NIO 的 ByteBuffer
         ByteBuf buf = (ByteBuf) msg;
-        System.out.println("收到客户端的消息:" + buf.toString(CharsetUtil.UTF_8));
+        System.out.println("客户端发送消息是:" + buf.toString(CharsetUtil.UTF_8));
     }
 
     /**
@@ -45,7 +35,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      * @throws Exception
      */
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) {
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         ByteBuf buf = Unpooled.copiedBuffer("HelloClient".getBytes(CharsetUtil.UTF_8));
         ctx.writeAndFlush(buf);
     }
@@ -58,7 +48,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      * @throws Exception
      */
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.close();
     }
 }
